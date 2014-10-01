@@ -31,12 +31,3 @@ $ python setup.py clean -all
 ```sh
 $ python setup.py sdist
 ```
-
-
-## ISSUE
-- Cythonがないときにbuildでエラーを起こす
-- setup.py develop で pipがバグる -> pipのバグ
-
-## TODO
-- cx_freezeパッケージングに対応する
-- ToxによるPython2,3環境でのテストに対応
