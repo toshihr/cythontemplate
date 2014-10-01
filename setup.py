@@ -70,5 +70,5 @@ setup(
     tests_require=_test_requires(),
     ext_modules=extensions,
     # scripts=[],
-    # entry_points={'console_scripts': ['cythontemplate = cythontemplate:main']},
+    entry_points={'console_scripts': ['cythontemplate = cythontemplate.main:main']},
 )
