@@ -13,19 +13,21 @@ except ImportError:
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import os.path
-
+import glob
+from itertools import chain
 
 version = '1.0.0'
 
 
-def _make_extension(ext_name):
+def _make_extensions(ext_name_with_wildcard):
     ext = '.pyx' if USE_CYTHON else '.c'
-    filename = ext_name.replace('.', os.path.sep) + ext
-    return Extension(
-        ext_name,
-        [filename],
+    filenames = glob.glob(ext_name_with_wildcard.replace('.', os.path.sep) + ext)
+
+    return [Extension(
+        name=filename.replace(os.path.sep, '.')[:-len(ext)],
+        sources=[filename],
         extra_compile_args=["-Wno-unneeded-internal-declaration", "-Wno-unused-function"],
-    )
+    ) for filename in filenames]
 
 
 def _do_cythonize():
@@ -49,8 +51,8 @@ def _test_requires():
 
 packages = find_packages(exclude=['tests'])
 
-# *.pyx or *.c
-extensions = list(map(lambda s: _make_extension(s + '.*'), packages))
+# gather package/*.[pyx|c]
+extensions = list(chain.from_iterable(map(lambda s: _make_extensions(s + '.*'), packages)))
 
 _do_cythonize()
 
@@ -63,7 +65,7 @@ setup(
     # keywords=,
     author='kerug',
     author_email='keru.work@gmail.com',
-    license='MIT',
+    # license='MIT',
     packages=packages,
     # package_data=, # works for bdist, not for sdist. MANIFET.in works in reverse
     install_requires=_install_requires(),
