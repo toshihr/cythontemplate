@@ -5,8 +5,8 @@ You should modify the following files based on your project:
 
 -  ``setup.py``
 -  ``MANIFEST.in``
--  ``requirements.txt``
--  ``test-requirements.txt``
+-  ``requirements.txt``: modules for install this project
+-  ``test-requirements.txt``: modules for develop this project
 
 Development & Tests
 -------------------
