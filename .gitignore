@@ -1,0 +1,15 @@
+*.py[oc]
+*.egg-info
+# setup.py working directory
+build
+# setup.py dist directory
+dist
+
+# generated c source and built extensions
+*.c
+*.so
+*.pyd
+
+.DS_Store
+.python-version
+.noseids

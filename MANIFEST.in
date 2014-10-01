@@ -1,0 +1,5 @@
+recursive-include cythontemplate *.pyx
+recursive-include tests *.py
+include requirements.txt
+include test-requirements.txt
+include README.md
