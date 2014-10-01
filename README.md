@@ -1,4 +1,4 @@
-cythontest: template for Cython + Nose project.
+cythontemplate: template for Cython + Nose project.
 ==================================
 
 You should modify the following files based on your project:
