@@ -10,6 +10,12 @@ try:
     USE_CYTHON = True
 except ImportError:
     USE_CYTHON = False
+# http://wiki.python.org/moin/PortingPythonToPy3k
+try:
+    from distutils.command.build_py import build_py_2to3 as build_py
+except ImportError:
+    # 2.x
+    from distutils.command.build_py import build_py
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import os.path
@@ -59,18 +65,22 @@ _do_cythonize()
 setup(
     name='cythontemplate',
     version=version,
-    description='cython + nose project template',
-    # url='',
-    # classifiers=,
-    # keywords=,
+    description='Cython + Nose project template',
+    url='https://github.com/kerug/cythontemplate',
+    long_description=open('README.rst').read() + '\n' + open('CHANGELOG.txt').read(),
+    classifiers=['Topic :: Software Development :: Libraries :: Python Modules'],
+    keywords='Cython Nose setup.py template',
     author='kerug',
     author_email='keru.work@gmail.com',
-    # license='MIT',
+    license='Freeware',
     packages=packages,
     # package_data=, # works for bdist, not for sdist. MANIFET.in works in reverse
     install_requires=_install_requires(),
     tests_require=_test_requires(),
+    test_suite='nose.collector',
+    zip_safe=False,
     ext_modules=extensions,
     # scripts=[],
     entry_points={'console_scripts': ['cythontemplate = cythontemplate.main:main']},
+    cmdclass={'build_py': build_py},
 )
