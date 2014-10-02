@@ -1,7 +1,7 @@
-from hellolib import hello
-from hellolib import cythonhello
-from hellolib.sublib import hello2
-from hellolib.sublib import cythonhello2
+from cythontemplate.hellolib import hello
+from cythontemplate.hellolib import cythonhello
+from cythontemplate.hellolib.sublib import hello2
+from cythontemplate.hellolib.sublib import cythonhello2
 
 
 def main():

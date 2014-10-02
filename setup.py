@@ -10,13 +10,22 @@ try:
 except ImportError:
     # 2.x
     from distutils.command.build_py import build_py
-from setuptools import setup, find_packages
+from setuptools import find_packages
 from setuptools.extension import Extension
+# if cx_Freeze is unnecessary, then the 'setup' module should be imported from setuptools
+from cx_Freeze import setup, Executable
+import sys
 import os.path
 import glob
 from itertools import chain
 
 version = '1.0.0'
+
+# cx_Freeze
+build_exe_options = {'packages': ['os'], 'excludes': ['tkinter']}
+base = None
+if sys.platform == 'win32':
+    base = 'Win32GUI'
 
 
 def _make_extensions(ext_name_with_wildcard):
@@ -69,7 +78,10 @@ setup(
     test_suite='nose.collector',
     zip_safe=False,
     ext_modules=extensions,
-    # scripts=[],
+    scripts=[],
     entry_points={'console_scripts': ['cythontemplate = cythontemplate.main:main']},
     cmdclass={'build_py': build_py},
+    # cx_Freeze
+    # options={'build_exe': build_exe_options},
+    executables=[Executable('cythontemplate/main.py', base=base)],
 )
