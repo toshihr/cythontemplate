@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function
-try:
-    from future_builtins import map
-except ImportError:
-    # Python 3 raise ImportError
-    pass
 try:
     from Cython.Build import cythonize
-    USE_CYTHON = True
+    EXIST_CYTHON = True
 except ImportError:
-    USE_CYTHON = False
+    EXIST_CYTHON = False
 # http://wiki.python.org/moin/PortingPythonToPy3k
 try:
     from distutils.command.build_py import build_py_2to3 as build_py
@@ -26,7 +20,7 @@ version = '1.0.0'
 
 
 def _make_extensions(ext_name_with_wildcard):
-    ext = '.pyx' if USE_CYTHON else '.c'
+    ext = '.pyx' if EXIST_CYTHON else '.c'
     filenames = glob.glob(ext_name_with_wildcard.replace('.', os.path.sep) + ext)
 
     return [Extension(
@@ -34,13 +28,6 @@ def _make_extensions(ext_name_with_wildcard):
         sources=[filename],
         extra_compile_args=["-Wno-unneeded-internal-declaration", "-Wno-unused-function"],
     ) for filename in filenames]
-
-
-def _do_cythonize():
-    if USE_CYTHON:
-        global extensions
-        print('cythonizing...')
-        extensions = cythonize(extensions)
 
 
 def _load_requires_from_file(filepath):
@@ -60,7 +47,9 @@ packages = find_packages(exclude=['tests'])
 # gather package/*.[pyx|c]
 extensions = list(chain.from_iterable(map(lambda s: _make_extensions(s + '.*'), packages)))
 
-_do_cythonize()
+if EXIST_CYTHON:
+    print('cythonizing...')
+    extensions = cythonize(extensions)
 
 setup(
     name='cythontemplate',
