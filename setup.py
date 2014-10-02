@@ -12,20 +12,18 @@ except ImportError:
     from distutils.command.build_py import build_py
 from setuptools import find_packages
 from setuptools.extension import Extension
-# if cx_Freeze is unnecessary, then the 'setup' module should be imported from setuptools
-from cx_Freeze import setup, Executable
-import sys
+try:
+    from cx_Freeze import setup, Executable
+    Executable  # for omitting the flake8 warning
+    EXIST_CX_FREEZE = True
+except ImportError:
+    from setuptools import setup
+    EXIST_CX_FREEZE = False
 import os.path
 import glob
 from itertools import chain
 
 version = '1.0.0'
-
-# cx_Freeze
-build_exe_options = {'packages': ['os'], 'excludes': ['tkinter']}
-base = None
-if sys.platform == 'win32':
-    base = 'Win32GUI'
 
 
 def _make_extensions(ext_name_with_wildcard):
@@ -82,6 +80,5 @@ setup(
     entry_points={'console_scripts': ['cythontemplate = cythontemplate.main:main']},
     cmdclass={'build_py': build_py},
     # cx_Freeze
-    # options={'build_exe': build_exe_options},
-    executables=[Executable('cythontemplate/main.py', base=base)],
+    # executables=[Executable('cythontemplate/main.py', base=None)],
 )
